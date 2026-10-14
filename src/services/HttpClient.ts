@@ -5,10 +5,10 @@ export class HttpClient {
   private readonly client: KyInstance;
   constructor(
     private readonly delayMs: number = 1_000,
-    timeoutMs: number = 10_000,
+    private readonly timeoutMs: number = 10_000,
   ) {
     this.client = ky.create({
-      timeout: timeoutMs,
+      timeout: this.timeoutMs,
       retry: {
         limit: 1,
         methods: ['get'],

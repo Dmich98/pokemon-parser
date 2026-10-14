@@ -7,14 +7,14 @@ import { CsvStorage } from '@storage';
 
 const SHOP_URL = 'https://scrapeme.live/shop/';
 
-const client = new HttpClient(0);
+const client = new HttpClient(100);
 
 const catalogScraper = new CatalogScraper(client, CatalogParser);
 const pokemonScraper = new PokemonScraper(client, PokemonParser);
 
 const storage = new CsvStorage();
 
-await catalogScraper.scrape(SHOP_URL, 3);
+await catalogScraper.scrape(SHOP_URL);
 await pokemonScraper.scrape(catalogScraper.urls);
 
 console.log(catalogScraper.urls);

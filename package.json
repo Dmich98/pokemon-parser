@@ -1,0 +1,32 @@
+{
+  "name": "parser",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun --watch src/main.ts",
+    "start": "bun src/main.ts",
+    "prepare": "vp config"
+  },
+  "dependencies": {
+    "cheerio": "^1.2.0",
+    "csv-stringify": "^6.9.0",
+    "ky": "^2.2.0"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.4.3",
+    "typescript": "^7",
+    "vite": "npm:@voidzero-dev/vite-plus-core@1.1.0",
+    "vite-plus": "1.1.0"
+  },
+  "overrides": {
+    "vite": "npm:@voidzero-dev/vite-plus-core@1.1.0"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "bun",
+      "version": "1.4.3",
+      "onFail": "download"
+    }
+  }
+}

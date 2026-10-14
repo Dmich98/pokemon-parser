@@ -6,7 +6,6 @@ import { join } from 'node:path';
 import { CsvStorage } from '../../src/storage/CsvStorage';
 
 describe('CsvStorage', () => {
-  const storage = new CsvStorage();
   const directories: string[] = [];
 
   async function createTempDir(): Promise<string> {
@@ -27,19 +26,17 @@ describe('CsvStorage', () => {
   it('saves records with CSV headers', async () => {
     const directory = await createTempDir();
     const filePath = join(directory, 'pokemons.csv');
+    const storage = new CsvStorage(filePath);
 
-    await storage.save(
-      [
-        {
-          name: 'Pikachu',
-          price: 37,
-          description: 'Electric Pokémon',
-          sku: '123',
-          stock: 42,
-        },
-      ],
-      filePath,
-    );
+    await storage.save([
+      {
+        name: 'Pikachu',
+        price: 37,
+        description: 'Electric Pokémon',
+        sku: '123',
+        stock: 42,
+      },
+    ]);
 
     const csv = await readFile(filePath, 'utf8');
 
@@ -51,16 +48,14 @@ describe('CsvStorage', () => {
   it('escapes commas, quotes and newlines', async () => {
     const directory = await createTempDir();
     const filePath = join(directory, 'pokemons.csv');
+    const storage = new CsvStorage(filePath);
 
-    await storage.save(
-      [
-        {
-          name: 'Pikachu',
-          description: 'Electric, "mouse"\nPokémon',
-        },
-      ],
-      filePath,
-    );
+    await storage.save([
+      {
+        name: 'Pikachu',
+        description: 'Electric, "mouse"\nPokémon',
+      },
+    ]);
 
     const csv = await readFile(filePath, 'utf8');
 
@@ -70,8 +65,9 @@ describe('CsvStorage', () => {
   it('creates missing parent directories', async () => {
     const directory = await createTempDir();
     const filePath = join(directory, 'nested', 'output', 'pokemons.csv');
+    const storage = new CsvStorage(filePath);
 
-    await storage.save([{ name: 'Pikachu' }], filePath);
+    await storage.save([{ name: 'Pikachu' }]);
 
     const csv = await readFile(filePath, 'utf8');
 
@@ -81,8 +77,9 @@ describe('CsvStorage', () => {
   it('saves null values as empty CSV cells', async () => {
     const directory = await createTempDir();
     const filePath = join(directory, 'pokemons.csv');
+    const storage = new CsvStorage(filePath);
 
-    await storage.save([{ name: 'Pikachu', price: null, stock: null }], filePath);
+    await storage.save([{ name: 'Pikachu', price: null, stock: null }]);
 
     const csv = await readFile(filePath, 'utf8');
 

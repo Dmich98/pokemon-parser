@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "bun --watch src/main.ts",
     "start": "bun src/main.ts",
-    "prepare": "vp config"
+    "prepare": "vp config",
+    "test": "bun test"
   },
   "dependencies": {
     "cheerio": "^1.2.0",

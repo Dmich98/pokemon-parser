@@ -17,9 +17,6 @@ const storage = new CsvStorage();
 await catalogScraper.scrape(SHOP_URL);
 await pokemonScraper.scrape(catalogScraper.urls);
 
-console.log(catalogScraper.urls);
-console.log(pokemonScraper.pokemons);
-
 const outputPath = resolve('output', 'pokemons.csv');
 
 await storage.save(pokemonScraper.pokemons.values().toArray(), outputPath);

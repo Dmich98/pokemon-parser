@@ -3,8 +3,12 @@ import ky, { HTTPError } from 'ky';
 
 export class HttpClient {
   private readonly client: KyInstance;
-  constructor(private readonly timeoutMs: number = 1000) {
+  constructor(
+    private readonly delayMs: number = 1_000,
+    timeoutMs: number = 10_000,
+  ) {
     this.client = ky.create({
+      timeout: timeoutMs,
       retry: {
         limit: 1,
         methods: ['get'],
@@ -17,7 +21,7 @@ export class HttpClient {
   }
 
   async get(url: string): Promise<string | undefined> {
-    await Bun.sleep(this.timeoutMs);
+    await Bun.sleep(this.delayMs);
 
     try {
       return await this.client.get(url).text();

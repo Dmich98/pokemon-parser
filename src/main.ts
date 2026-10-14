@@ -5,18 +5,19 @@ import { CatalogScraper, PokemonScraper } from '@scrapers';
 import { HttpClient } from '@services';
 import { CsvStorage } from '@storage';
 
+const REQUEST_DELAY_MS = 100;
 const SHOP_URL = 'https://scrapeme.live/shop/';
 
-const client = new HttpClient(100);
+const client = new HttpClient(REQUEST_DELAY_MS);
 
 const catalogScraper = new CatalogScraper(client, CatalogParser);
 const pokemonScraper = new PokemonScraper(client, PokemonParser);
-
-const storage = new CsvStorage();
 
 await catalogScraper.scrape(SHOP_URL);
 await pokemonScraper.scrape(catalogScraper.urls);
 
 const outputPath = resolve('output', 'pokemons.csv');
 
-await storage.save(pokemonScraper.pokemons.values().toArray(), outputPath);
+const storage = new CsvStorage(outputPath);
+
+await storage.save(pokemonScraper.pokemons.values().toArray());

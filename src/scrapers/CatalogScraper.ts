@@ -19,6 +19,15 @@ export class CatalogScraper {
 
       const html = await this.client.get(pageUrl);
 
+      if (html === undefined) {
+        if (page === 1) {
+          throw new Error(`Catalog not found: ${pageUrl}`);
+        }
+
+        console.log(`Page ${page}: end of catalog`);
+        break;
+      }
+
       const parsedUrls = new this.parser(html).parse();
 
       const previousSize = this.collectedUrls.size;

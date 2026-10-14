@@ -1,9 +1,9 @@
 const string = (value?: string): string => value?.trim() ?? '';
 
-const number = (value?: string): number => {
+const number = (value?: string): number | null => {
   const normalized = string(value);
 
-  if (!normalized) return 0;
+  if (!normalized) return null;
 
   const result = Number(normalized);
 

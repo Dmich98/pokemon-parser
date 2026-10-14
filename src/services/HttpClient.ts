@@ -1,10 +1,9 @@
 import type { KyInstance } from 'ky';
-import ky from 'ky';
+import ky, { HTTPError } from 'ky';
 
 export class HttpClient {
   private readonly client: KyInstance;
-
-  constructor() {
+  constructor(private readonly timeoutMs: number = 1000) {
     this.client = ky.create({
       retry: {
         limit: 1,
@@ -17,9 +16,17 @@ export class HttpClient {
     });
   }
 
-  async get(url: string): Promise<string> {
-    await Bun.sleep(1000);
+  async get(url: string): Promise<string | undefined> {
+    await Bun.sleep(this.timeoutMs);
 
-    return this.client.get(url).text();
+    try {
+      return await this.client.get(url).text();
+    } catch (error) {
+      if (error instanceof HTTPError && error.response.status === 404) {
+        return undefined;
+      }
+
+      throw error;
+    }
   }
 }

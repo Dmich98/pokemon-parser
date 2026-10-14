@@ -1,7 +1,7 @@
 export interface Pokemon {
   name: string;
-  price: number;
+  price: number | null;
   description: string;
   sku: string;
-  stock: number;
+  stock: number | null;
 }

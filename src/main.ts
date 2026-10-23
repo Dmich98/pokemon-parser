@@ -1,23 +1,33 @@
-import { resolve } from 'node:path';
-
-import { CatalogParser, PokemonParser } from '@parsers';
-import { CatalogScraper, PokemonScraper } from '@scrapers';
+import { printWalkError, printWalkResult, printWalkStart } from '@cli';
+import { WikiArticleParser } from '@parsers';
+import { WikiArticleScrapper } from '@scrapers';
 import { HttpClient } from '@services';
-import { CsvStorage } from '@storage';
 
-const REQUEST_DELAY_MS = 100;
-const SHOP_URL = 'https://scrapeme.live/shop/';
+const REQUEST_DELAY_MS = 500;
+const MAX_PAGES = 100;
+const START_URL = 'https://en.wikipedia.org/wiki/Special:Random';
+const TARGET_URL = 'https://en.wikipedia.org/wiki/Philosophy';
 
 const client = new HttpClient(REQUEST_DELAY_MS);
+const articleScrapper = new WikiArticleScrapper(client, WikiArticleParser);
 
-const catalogScraper = new CatalogScraper(client, CatalogParser);
-const pokemonScraper = new PokemonScraper(client, PokemonParser);
+printWalkStart({
+  startUrl: START_URL,
+  targetUrl: TARGET_URL,
+  maxPages: MAX_PAGES,
+  delayMs: REQUEST_DELAY_MS,
+});
 
-await catalogScraper.scrape(SHOP_URL);
-await pokemonScraper.scrape(catalogScraper.urls);
+const startedAt = performance.now();
 
-const outputPath = resolve('output', 'pokemons.csv');
+try {
+  const result = await articleScrapper.scrape(START_URL, {
+    targetUrl: TARGET_URL,
+    maxPages: MAX_PAGES,
+  });
 
-const storage = new CsvStorage(outputPath);
-
-await storage.save(pokemonScraper.pokemons.values().toArray());
+  printWalkResult(result, performance.now() - startedAt);
+} catch (error) {
+  printWalkError(error);
+  process.exitCode = 1;
+}

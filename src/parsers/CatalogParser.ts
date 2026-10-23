@@ -10,7 +10,6 @@ export class CatalogParser extends BaseParser<Set<string>> {
 
       if (href) urls.add(href);
     });
-
     this.setData(urls);
 
     return this;

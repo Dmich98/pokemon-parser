@@ -1,3 +1,4 @@
+import { withSpinner } from '@decorators';
 import type { KyInstance } from 'ky';
 import ky, { HTTPError } from 'ky';
 
@@ -20,6 +21,7 @@ export class HttpClient {
     });
   }
 
+  @withSpinner
   async get(url: string): Promise<string | undefined> {
     await Bun.sleep(this.delayMs);
 

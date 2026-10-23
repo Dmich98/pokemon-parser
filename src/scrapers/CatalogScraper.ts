@@ -1,13 +1,12 @@
-import { CatalogParser } from '@parsers';
-import type { HttpClient } from '@services';
+import type { CatalogParser } from '@parsers';
 
-export class CatalogScraper {
+import { BaseScrapper } from './BaseScrapper';
+
+export class CatalogScraper extends BaseScrapper<
+  CatalogParser,
+  [baseUrl: string, maxPages?: number]
+> {
   private readonly collectedUrls = new Set<string>();
-
-  constructor(
-    private readonly client: HttpClient,
-    private readonly parser: typeof CatalogParser,
-  ) {}
 
   async scrape(baseUrl: string, maxPages?: number): Promise<this> {
     this.collectedUrls.clear();

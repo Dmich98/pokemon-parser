@@ -1,14 +1,10 @@
 import type { Pokemon } from '@models';
 import type { PokemonParser } from '@parsers';
-import type { HttpClient } from '@services';
 
-export class PokemonScraper {
+import { BaseScrapper } from './BaseScrapper';
+
+export class PokemonScraper extends BaseScrapper<PokemonParser, [urls: ReadonlySet<string>]> {
   private readonly collectedPokemons = new Set<Pokemon>();
-
-  constructor(
-    private readonly client: HttpClient,
-    private readonly parser: typeof PokemonParser,
-  ) {}
 
   async scrape(urls: ReadonlySet<string>): Promise<this> {
     this.collectedPokemons.clear();

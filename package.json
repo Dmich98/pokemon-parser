@@ -10,6 +10,7 @@
     "test": "bun test"
   },
   "dependencies": {
+    "@clack/prompts": "^1.8.1",
     "cheerio": "^1.2.0",
     "csv-stringify": "^6.9.0",
     "ky": "^2.2.0"

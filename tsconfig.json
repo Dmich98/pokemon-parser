@@ -14,7 +14,8 @@
       "@models": ["./src/models/index.ts"],
       "@scrapers": ["./src/scrapers/index.ts"],
       "@utils": ["./src/utils/index.ts"],
-      "@storage": ["./src/storage/index.ts"]
+      "@storage": ["./src/storage/index.ts"],
+      "@decorators": ["./src/decorators/index.ts"]
     },
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
